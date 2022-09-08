@@ -1,8 +1,64 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.lottoList {
+  font: 20px;
+  margin: 30px;
+  height: 40px;
+}
+
+.colorOrange {
+  display: inline-block;
+  color: white;
+  background-color: orange;
+  border-radius: 12px;
+  margin-right: 12px;
+  width: 30px;
+  text-align: center;
+}
+
+.colorBlue {
+  display: inline-block;
+  color: white;
+  background-color: blue;
+  border-radius: 12px;
+  margin-right: 12px;
+  width: 30px;
+  text-align: center;
+}
+
+.colorPink {
+  display: inline-block;
+  color: white;
+  background-color: rgb(241, 12, 241);
+  border-radius: 12px;
+  margin-right: 12px;
+  width: 30px;
+  text-align: center;
+}
+
+.colorGrey {
+  display: inline-block;
+  color: white;
+  background-color: grey;
+  border-radius: 12px;
+  margin-right: 12px;
+  width: 30px;
+  text-align: center;
+}
+
+.colorGreen {
+  display: inline-block;
+  color: white;
+  background-color: green;
+  border-radius: 12px;
+  margin-right: 12px;
+  width: 30px;
+  text-align: center;
 }
