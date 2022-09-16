@@ -20,21 +20,24 @@
 
 
 */
-const thisWeekNumbers = document.getElementById("thisWeekNumbers"); //thisWeekNumbers의 ul전체를 담은 변수
-const inputValue = document.getElementById("number_choice"); //input창을 담은 변수
-
+const $thisWeekNumbers = document.getElementById("thisWeekNumbers"); //thisWeekNumbers의 ul전체를 담은 변수
+const $inputValue = document.getElementById("number_choice"); //input창을 담은 변수
+// element잡을때 +$
 
 function selectingWinningNumbers () {
     if (thisWeekNumbers.length > 5) {  //thisWeekNumbers ul안의 갯수가 7개 이상이면 alert
         alert('6개의 숫자까지 등록 가능합니다.');
     } else if (isNaN(inputValue.value) == true ) {  //input창에 적은 글자가 숫자가 아니라면 alert
         alert('숫자만 적어주세요.');
-    } else if (inputValue.value < 0) { //input창에 적은 숫자가 0보다 작다면 alert
+    } else if (inputValue.value < 1) { //input창에 적은 숫자가 0보다 작다면 alert
         alert('1 에서 45 사이의 숫자를 적어주세요.');
     } else if (inputValue.value > 45) {  //input창에 적은 숫자가 46이상이라면 alert
         alert('1 에서 45 사이의 숫자를 적어주세요.');
     } 
     
+
+//******* for loop 안에 조건문 다시 생각해서 작성, if 도
+
     
     let chkr = false //for loop을 돌렸을 때 값을 확인 할 수 있도록 만든 체커 변수
 
