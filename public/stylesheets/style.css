@@ -7,6 +7,20 @@ a {
   color: #00B7FF;
 }
 
+/* 금주 당첨 번호 섹션 */
+#winningSection {
+  font-size: 30px;
+  text-align: center;
+}
+
+.numberSelection {
+  width: 100px;
+}
+
+#thisWeekNumbers {
+  text-align: center;
+}
+
 .lottoList {
   font: 20px;
   margin: 30px;
