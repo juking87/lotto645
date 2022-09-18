@@ -17,6 +17,7 @@
         5. 생성된 span에 textContent를 넣는다
         6. 넣어진 숫자 범위에 따라서 알맞은 class를 부여한다.
         7. span 갯수가 6개가 되면 더 이상 등록할 수 없도록 만든다
+<<<<<<< HEAD
 */
 const $thisWeekNumbers = document.getElementById("thisWeekNumbers"); //thisWeekNumbers의 ul전체를 담은 변수
 const finalArr = []; //중복으로 등록하려는 숫자를 확인 할 수 있도록 만들어놓은 빈 배열, selectingWinningNumbers함수가 끝나면(체크리스트를 다 통과한 뒤)
@@ -76,6 +77,7 @@ $fixNumbers.addEventListener('click', selectingWinningNumbers); // 등록버튼�
 //1. return false 대신 다른 방법이 필요할듯? 잘 모르겠음  
 //2. 등록된 숫자들이 오름차순으로 보였으면 좋겠음
 //3. 
+
 
 
 

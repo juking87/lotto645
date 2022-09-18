@@ -17,10 +17,13 @@ a {
   width: 100px;
 }
 
+<<<<<<< HEAD
 #thisWeekNumbers {
   text-align: center;
 }
 
+=======
+>>>>>>> 829c1fc0165a4fd339952fd732728a486071b111
 .lottoList {
   font: 20px;
   margin: 30px;
@@ -76,3 +79,4 @@ a {
   width: 30px;
   text-align: center;
 }
+
