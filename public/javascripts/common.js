@@ -17,37 +17,19 @@
         5. 생성된 span에 textContent를 넣는다
         6. 넣어진 숫자 범위에 따라서 알맞은 class를 부여한다.
         7. span 갯수가 6개가 되면 더 이상 등록할 수 없도록 만든다
-<<<<<<< HEAD
+
 */
 const $thisWeekNumbers = document.getElementById("thisWeekNumbers"); //thisWeekNumbers의 ul전체를 담은 변수
 const finalArr = []; //중복으로 등록하려는 숫자를 확인 할 수 있도록 만들어놓은 빈 배열, selectingWinningNumbers함수가 끝나면(체크리스트를 다 통과한 뒤)
-                    //usedArr에 넣어준다. 중복 확인은 usedArr에 들어있는 값과 현재 input에 등록된 값을 비교한다
+                    //finalArr에 넣어준다. 중복 확인은 finalArr에 들어있는 값과 현재 input에 등록된 값을 비교한다
 
 function selectingWinningNumbers () { // input 창을 통해 6개의 숫자를 등록하는 함수이다
 
-    let newArr = []; //input 창에 적힌 숫자를 임시로 넣어놓을 빈 배열이다
-    newArr.push(document.getElementById("number_choice").value); //newArr에 input창에 적힌 값을 넣어준다
-
-    let addSpan = document.createElement('span'); //빈 span을 생성한다
-    addSpan.textContent = newArr;  //생성된 span의 text값을 newArr에 들어있는 값으로 할당해준다
-    let inputNumber = addSpan.textContent; // span에 들어간 값을 inputNumber라는 변수에 할당한다. 간편하게 작업하기 위해서 할당
-
-    if (inputNumber <= 10) {  // inputNumber의 값을 숫자 범위에 따라서 미리 만들어놓은 class를 부여한다
-        addSpan.classList.add('colorOrange');
-    } else if (inputNumber <= 20) {
-        addSpan.classList.add('colorBlue');
-    } else if (inputNumber <= 30) {
-        addSpan.classList.add('colorPink');
-    } else if (inputNumber <= 40) {
-        addSpan.classList.add('colorGrey');
-    } else {
-        addSpan.classList.add('colorGreen');
-    }
-                            
+    let inputNumber = document.getElementById("number_choice").value; //input창에 적힌 값을 inputNumber 변수에 할당한다
 
     if ($thisWeekNumbers.childElementCount/*아니면 children.lenth*/ > 5) {  //thisWeekNumbers ul안의 element갯수가 7개 이상이면 alert
         alert('6개의 숫자까지 등록 가능합니다.');
-        return false;  //webpage가 리셋되는 느낌임, 다른 방법을 강구해야 할듯?
+        return false;  
     } else if (isNaN(inputNumber) == true ) {  //input창에 적은 글자가 숫자가 아니라면 alert
         alert('숫자만 적어주세요.');
         return false;
@@ -64,28 +46,54 @@ function selectingWinningNumbers () { // input 창을 통해 6개의 숫자를 �
         finalArr.push(inputNumber); // 중복되지 않는다면 함수밖 finalArr에 값을 넣어준다
     }
 
-    //finalArr.sort((a, b) => a - b); 등록된 숫자들이 오름차순으로 배열이 되어서 보여졌으면 좋겠다. 어떻게 하는지 여쭤보자
-    //thisWeekNumbers 안의 span 값들을 먼저 비교해서 순서를 바꿀 수 있을까? 한번 찾아보자
-    $thisWeekNumbers.append(addSpan);
-}    
+    finalArr.sort((a, b) => a - b); //finalArr에 있는 값들을 오름차순으로 sorting한다
 
-const $fixNumbers = document.querySelector('#fixNumbers'); //등록버튼을 담은 변수
+    while ($thisWeekNumbers.getElementsByTagName('span').length > 0) {  //$thisWeekNumbers 안에 존재하는 span들의 길이가 0보다 클때        
+        $thisWeekNumbers.getElementsByTagName('span')[0].remove(); //$thisWeekNumbers안에 있는 인덱스 0번째 span을 지운다
+    }
+
+    for (i = 0; i < finalArr.length; i++) { //finalArr안에 있는 값들의 갯수만큼 loop을 돌린다
+        let addSpan = document.createElement('span'); //빈 span을 생성한다
+        addSpan.textContent = finalArr[i]; //span안에 text를 finalArr[i]번째의 값을 넣어준다
+        let finalArrNumber = addSpan.textContent; // finalArrNumber라는 변수에 text값이 들어간 span을 할당한다
+        
+        if (finalArrNumber <= 10) {  // inputNumber의 값을 숫자 범위에 따라서 미리 만들어놓은 class를 부여한다
+            addSpan.classList.add('colorOrange');
+        } else if (finalArrNumber <= 20) {
+            addSpan.classList.add('colorBlue');
+        } else if (finalArrNumber <= 30) {
+            addSpan.classList.add('colorPink');
+        } else if (finalArrNumber <= 40) {
+            addSpan.classList.add('colorGrey');
+        } else {
+            addSpan.classList.add('colorGreen');
+        }
+        $thisWeekNumbers.append(addSpan); //loop를 돌때마다 새롭게 정렬된 값이 들어있는 span을 $thisWeekNumbers에 넣어준다
+    }
+}   
+
+const $fixNumbers = document.getElementById('fixNumbers'); //등록버튼을 담은 변수
 $fixNumbers.addEventListener('click', selectingWinningNumbers); // 등록버튼을 담은 변수에 click하면 selectingWinningNumbers 함수가 작동되도록 설정
 
 
-//바꿔야 할것들  
-//1. return false 대신 다른 방법이 필요할듯? 잘 모르겠음  
-//2. 등록된 숫자들이 오름차순으로 보였으면 좋겠음
-//3. 
+function removeWinningNumbers () {
+    while ($thisWeekNumbers.getElementsByTagName('span').length > 0) {        
+        $thisWeekNumbers.getElementsByTagName('span')[0].remove();
+    }
+    while (finalArr.length > 0) {
+        finalArr.pop();
+    }
+};
 
-
+const $removeNumbers = document.getElementById('removeWinningNumbers');
+$removeNumbers.addEventListener('click', removeWinningNumbers);
 
 
 
 
 //랜덤 번호 생성하는 자바스크립트
 
-const lottoNumbers_result = document.querySelector('#lottoNumbers_result');
+const lottoNumbers_result = document.getElementById('lottoNumbers_result');
 
 function gernateLottoNumbers () {   //lottoNumbers_result div에 새로운 li를 생성해서 중복되지 않는 6개의 숫자를 조건에 맞춰 스타일을 적용해주는 함수
     let newArr = [];  //생성된 로또 번호 넣을 배열 생성
@@ -125,9 +133,7 @@ function gernateLottoNumbers () {   //lottoNumbers_result div에 새로운 li를
             addSpan.classList.add('colorGreen');
         }
         addList.append(addSpan);
-    }                         
-    
-
+    }
     //addList.textContent = newArr; // 'li'안의 택스트를 newArr 배열안에 있는 숫자로 표현
     lottoNumbers_result.append(addList); //lottoNumbers_result div 안 끝에 숫자가 텍스트로 적어진 'li'를 추가
     newArr = []; //배열을 다시 비워줌
@@ -137,10 +143,10 @@ function removeLottoNumbers () {  //윈도우 창에 불려온 로또 번호 전
     document.getElementById('lottoNumbers_result').innerHTML = ""; //id가 lottoNumbers_result인 곳의 안쪽 html을 다 없엔다
 };
 
-const generate = document.querySelector('#makeNumbers');
+const generate = document.getElementById('makeNumbers');
 generate.addEventListener('click', gernateLottoNumbers); // 로또 숫자 6자리 생성하는 이벤트를 부여한다
 
-const reset = document.querySelector('#removeNumbers')
+const reset = document.getElementById('removeNumbers')
 reset.addEventListener('click', removeLottoNumbers);  // 만들어진 숫자 6자리 전체 리스트를 없엔다
 
 
