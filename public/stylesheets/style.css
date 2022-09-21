@@ -80,4 +80,8 @@ a {
   text-align: center;
 }
 
-.deleteIcon
+.deleteIcon {
+  display: inline-block;
+  font-size: 30px;
+  color:crimson;
+}

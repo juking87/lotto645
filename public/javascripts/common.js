@@ -94,8 +94,8 @@ $removeNumbers.addEventListener('click', removeWinningNumbers); // 위 리셋 �
 
 //********************랜덤 번호 생성하는 자바스크립트************************
 
-const lottoNumbers_result = document.getElementById('lottoNumbers_result');
-const lottoNumbersArr = [];
+const $lottoNumbers_result = document.getElementById('randomLottoNumbers'); //randomLottoNumbers 를 id로 가지고 있는 div를 변수에 할당
+let lottoNumbersArr = []; //6개의 로또 숫자 리스트를 배열로 집어넣을 빈 배열 설정
 
 function gernateLottoNumbers () {   //lottoNumbers_result div에 새로운 li를 생성해서 중복되지 않는 6개의 숫자를 조건에 맞춰 스타일을 적용해주는 함수
     let newArr = [];  //생성된 로또 번호 넣을 배열 생성
@@ -109,58 +109,95 @@ function gernateLottoNumbers () {   //lottoNumbers_result div에 새로운 li를
         }
     }
 
-    /*while(newArr.length<6){
-        let numbers = Math.floor(Math.random() * 45) + 1; //1~45 사이의 숫자를 생성해서 numbers에 저장
-        if(!newArr.includes(numbers)){
-            newArr.push(numbers);
-        }
-    }*/
-    
     newArr.sort((a, b) => a - b); // newArr에 들어있는 숫자 6개를 오름차순으로 배열
 
-    
-    lottoNumbersArr.push(newArr);
+    lottoNumbersArr.push(newArr); // 랜덤번호 생성할 때마다 해당번호들 배열을 넣어줄 lottoNumbersArr에 생성된 6자리 숫자들이 있는 배열을 넣어준다
 
-    const addList = document.createElement('li');  //'li'를 추가하는 요소 생성
-    
-    //for(let i = 0;i<newArr.length;i++){newArr[i]}
-    for (let value of newArr) {
-        const addSpan = document.createElement('span'); 
-        addSpan.textContent = value;
-        if (value <= 10) {
-            addSpan.classList.add('colorOrange');
-        } else if (value <= 20) {
-            addSpan.classList.add('colorBlue');
-        } else if (value <= 30) {
-            addSpan.classList.add('colorPink');
-        } else if (value <= 40) {
-            addSpan.classList.add('colorGrey');
-        } else {
-            addSpan.classList.add('colorGreen');
-        }
-        addList.append(addSpan);
-    }
+    drawGeneratedList();
 
-    let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 span을 만든다
-    addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
-    addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
-    addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 append를 써서 넣어준다
-
-    addDelete.addEventListener('click', deleteLottoNumber); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
-
-    
-        //addList.textContent = newArr; // 'li'안의 택스트를 newArr 배열안에 있는 숫자로 표현
-    lottoNumbers_result.append(addList); //lottoNumbers_result div 안 끝에 숫자가 텍스트로 적어진 'li'를 추가
-    
     newArr = []; //배열을 다시 비워줌
 };
+function drawGeneratedList(){
+    let divSection = document.getElementById('randomLottoNumbers'); //randomLottoNumbers라는 아이디를 가진 div구역을 설정해주는 변수를 만든다
+    let ulSection = document.getElementById('lottoNumbersResult');
+    if(ulSection!==null){
+        ulSection.remove();
+    }
+    const addUl = document.createElement('ul'); //'ul'을 생성하는 메소드를 addUl에 할당한다
+    addUl.setAttribute('id', 'lottoNumbersResult'); //생성된 'ul'에 lottoNumbersResult라는 id를 넣어준다
+
+    for (i = 0; i < lottoNumbersArr.length; i++) { //lottoNumbersArr 배열에 존재하는 배열들의 갯수만큼 loop을 돌린다
+        let addList = document.createElement('li');  //'li'를 생성한다
+        for (j = 0; j < lottoNumbersArr[i].length; j++) { //lottoNumbersArr[i]째의 배열안에 들어있는 값의 갯수만큼 loop을 돌린다
+            let addSpan = document.createElement('span'); //'span'을 생성한다
+            addSpan.textContent = lottoNumbersArr[i][j]; //생성된 'span'에 lottoNumbersArr[i] 번째 배열에서 [j] 번째의 값을 텍스트로 넣어준다  
+            if (lottoNumbersArr[i][j] <= 10) { // 텍스트로 넣어준 숫자의 크기에 따라 알맞은 class를 부여해준다
+                addSpan.classList.add('colorOrange');
+            } else if (lottoNumbersArr[i][j] <= 20) {
+                addSpan.classList.add('colorBlue');
+            } else if (lottoNumbersArr[i][j] <= 30) {
+                addSpan.classList.add('colorPink');
+            } else if (lottoNumbersArr[i][j] <= 40) {
+                addSpan.classList.add('colorGrey');
+            } else {
+                addSpan.classList.add('colorGreen');
+            }
+            addList.append(addSpan); //작업이 끝난 'span'을 만들어둔 'li'의 끝에 넣어준다
+        }
+        let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 추가 span을 만든다
+        addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
+        addDelete.setAttribute("data-idx",i);
+        addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
+        addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 넣어준다
+        addDelete.addEventListener('click', deleteLottoNumber); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
+
+        addUl.prepend(addList); //이렇게 최종적으로 span들이 들어간 li를 'ul'에 넣어준다. lottoNumbersArr배열안에 있는 값의 갯수만큼 넣어줄 예정
+    }
+    divSection.append(addUl); //ul이 들어갈 divSection이라고 미리 설정해둔 div에 span들과 li들이 이미 다 들어간 ul을 넣어준다
+}
 
 function removeLottoNumbers () {  //윈도우 창에 불려온 로또 번호 전체를 없엔다
-    document.getElementById('lottoNumbers_result').innerHTML = ""; //id가 lottoNumbers_result인 곳의 안쪽 html을 다 없엔다
+    //document.getElementById('randomLottoNumbers').innerHTML = ""; //id가 lottoNumbers_result인 곳의 안쪽 html을 다 없엔다
+    while(lottoNumbersArr.length>0){
+        lottoNumbersArr.pop();
+    }
+    drawGeneratedList();  
 };
 
-function deleteLottoNumber (event) { //만들어진 6개 로또숫자들을 지울 수 있게 만드는 함수
-    event.target.parentElement.remove(); //클릭되어지는 곳의('-'에 설정해둠) 부모엘레먼트('li')를 통으로 없엔다.
+function deleteLottoNumber (event) { //만들어진 6개 로또숫자 리스트 마다에 해당 리스트를 지울 수 있도록 하는 '-'버튼의 기능이 담긴 함수
+    
+    //현재의 li 안에 있는 값들을 배열로 받아오고 이 배열과 lottoNumbersArr에 있는 배열들 중 같은 값을 가지고 있는게 있다면 index를 찾아서 그걸 지워라  
+    lottoNumbersArr.splice(event.target.getAttribute("data-idx"),1);
+    drawGeneratedList();
+    /*
+    let newArr = [];
+    let findDeleteKey = document.getElementsByClassName('deleteIcon');
+    let parentDeleteKey = findDeleteKey[0].parentElement;
+    for (i = 0; i < parentDeleteKey.children.length - 1; i++) {
+        newArr.push(parentDeleteKey.children[i].innerHTML);   //newArr에 클릭한 곳의 숫자값들을 newArr에 넣는다.
+    }
+
+    for (i = 0; i < lottoNumbersArr.length; i++) {
+        if (lottoNumbersArr[i].toLocaleString() == newArr) {
+            lottoNumbersArr.splice([i], 1);
+        }
+    }
+    */
+    //let index = Array.from(event.target.parentElement.children).indexOf(this.target); // 이건 작동한다. 하지만 새롭게 만들어 보는중
+    //lottoNumbersArr.splice(index, 1);
+
+    //event.target.parentElement.remove(); //클릭되어지는 곳의('-'에 설정해둠) 부모엘레먼트('li')를 통으로 없엔다.
+
+    //lottoNumbersArr에서도 지울 수 있는 방법 강구
+
+    //1. 지우려 하는 6개 숫자가 적힌 배열을 lottoNumbersArr에 있는 배열들과 비교해서 똑같은 element를 삭제
+    //2. 지우려 하는 6개 숫자가 적힌 배열의 index번호를 찾아서 lottoNumbersArr의 인덱스 번호와 같을테니 찾아서 삭제
+
+    //2번을 하려고 시도 했음
+    //근데 우연찮게 됐을까봐 콘솔에서 확인하려 다시 작성해봤는데 실행되지 않음
+    //해본거
+
+
 }
 
 
@@ -174,7 +211,45 @@ reset.addEventListener('click', removeLottoNumbers);  // 만들어진 숫자 6�
 /*
 랜덤로또 번호를 생성할때 만들어진 6개의 숫자를 하나의 배열안에 넣어서 그 배열 자체를 lottoNumbersArr라는 배열에 배열형태로 넣어준다
 랜덤번호가 배열 형태로 기록되고 그 배열을 lottoNumbersArr 배열에 집어넣어서 추후에 재활용 할 목적으로 만들었다.
-
-
-
 */
+
+//리스트 저장 버튼을 눌렀을 때 로또 숫자들을 새롭게 보낼 div를 설정한다
+const $purchasableList = document.getElementById('purchasableList');
+
+function purchasableLottoList () { //로또 번호들을 구매할 구역으로 옮기는 함수
+
+    for (i = 0; i < lottoNumbersArr.length; i++) { //lottoNumbersArr에 있는 배열의 갯수 만큼
+
+        let addList = document.createElement('li'); //'li'를 한개 생성하고
+
+        for (j = 0; j < lottoNumbersArr[i].length; j++) { //lottoNumbersArr에 있는 각 배열안에 있는 값의 갯수 만큼
+            const addSpan = document.createElement('span'); //'span'을 한개 생성하고
+            addSpan.textContent = lottoNumbersArr[i][j]; //그 span안의 text값을 i번째 배열에서 j번째의 숫자를 할당하고
+            if (lottoNumbersArr[i][j] <= 10) { //숫자 크기의 범위에 따라 아래 class를 넣어준다
+                addSpan.classList.add('colorOrange');
+            } else if (lottoNumbersArr[i][j] <= 20) {
+                addSpan.classList.add('colorBlue');
+            } else if (lottoNumbersArr[i][j] <= 30) {
+                addSpan.classList.add('colorPink');
+            } else if (lottoNumbersArr[i][j] <= 40) {
+                addSpan.classList.add('colorGrey');
+            } else {
+                addSpan.classList.add('colorGreen');
+            }
+            addList.append(addSpan); //loop을 돌때마다 만들어진 하나의 span을 Li에 넣어준다
+        }
+        
+        $purchasableList.append(addList); //만들어진 li를 ul($purchasableList)에 넣어준다
+    }
+}
+
+const purchasable = document.getElementById('saveNumbers'); //리스트 저장버튼을 지정해준다
+purchasable.addEventListener('click', purchasableLottoList); //리스트 저장 버튼에 임시 번호 생성창에 만들어놓은 로또 번호들을
+                                                             //구매 예정창으로 옮겨주는 함수를 할당해준다           
+
+function resetPurchasableLottoList () { //구매 할 로또 리스트를 리셋하는 함수
+    document.getElementById('purchasableList').innerHTML = "";  //구매 할 로또 리스트들이 담겨져 있는 ul의 innerHTML을 비어준다
+}
+
+const resetPurchasableList = document.getElementById('resetNumbers');  //리셋 버튼에 구매 할 로또 리스트를 리셋하는 함수를 할당한다
+resetPurchasableList.addEventListener('click', resetPurchasableLottoList);
