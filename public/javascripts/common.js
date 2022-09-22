@@ -214,42 +214,112 @@ reset.addEventListener('click', removeLottoNumbers);  // 만들어진 숫자 6�
 */
 
 //리스트 저장 버튼을 눌렀을 때 로또 숫자들을 새롭게 보낼 div를 설정한다
-const $purchasableList = document.getElementById('purchasableList');
+const $purchasableList = document.getElementById('purchasableLottoList');
+
+let purchasableArr = [];  
 
 function purchasableLottoList () { //로또 번호들을 구매할 구역으로 옮기는 함수
-
-    for (i = 0; i < lottoNumbersArr.length; i++) { //lottoNumbersArr에 있는 배열의 갯수 만큼
+     
+    
+    for (i = 0; i < lottoNumbersArr.length; i++) {
+        purchasableArr.push(lottoNumbersArr[i]);
+    }
+    
+    let ulSection = document.getElementById('purchasableLottoNumbers');
+    if(ulSection!==null){
+        ulSection.remove();
+    }
+    const addUl = document.createElement('ul'); //'ul'을 생성하는 메소드를 addUl에 할당한다
+    addUl.setAttribute('id', 'purchasableLottoNumbers'); //생성된 'ul'에 lottoNumbersResult라는 id를 넣어준다
+    for (i = 0; i < purchasableArr.length; i++) { //lottoNumbersArr에 있는 배열의 갯수 만큼
 
         let addList = document.createElement('li'); //'li'를 한개 생성하고
 
-        for (j = 0; j < lottoNumbersArr[i].length; j++) { //lottoNumbersArr에 있는 각 배열안에 있는 값의 갯수 만큼
+        for (j = 0; j < purchasableArr[i].length; j++) { //lottoNumbersArr에 있는 각 배열안에 있는 값의 갯수 만큼
             const addSpan = document.createElement('span'); //'span'을 한개 생성하고
-            addSpan.textContent = lottoNumbersArr[i][j]; //그 span안의 text값을 i번째 배열에서 j번째의 숫자를 할당하고
-            if (lottoNumbersArr[i][j] <= 10) { //숫자 크기의 범위에 따라 아래 class를 넣어준다
+            addSpan.textContent = purchasableArr[i][j]; //그 span안의 text값을 i번째 배열에서 j번째의 숫자를 할당하고
+            if (purchasableArr[i][j] <= 10) { //숫자 크기의 범위에 따라 아래 class를 넣어준다
                 addSpan.classList.add('colorOrange');
-            } else if (lottoNumbersArr[i][j] <= 20) {
+            } else if (purchasableArr[i][j] <= 20) {
                 addSpan.classList.add('colorBlue');
-            } else if (lottoNumbersArr[i][j] <= 30) {
+            } else if (purchasableArr[i][j] <= 30) {
                 addSpan.classList.add('colorPink');
-            } else if (lottoNumbersArr[i][j] <= 40) {
+            } else if (purchasableArr[i][j] <= 40) {
                 addSpan.classList.add('colorGrey');
             } else {
                 addSpan.classList.add('colorGreen');
             }
             addList.append(addSpan); //loop을 돌때마다 만들어진 하나의 span을 Li에 넣어준다
         }
-        
-        $purchasableList.append(addList); //만들어진 li를 ul($purchasableList)에 넣어준다
+        let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 추가 span을 만든다
+        addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
+        addDelete.setAttribute("data-idx2",i);
+        addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
+        addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 넣어준다
+        addDelete.addEventListener('click', deleteLottoNumber2); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
+
+        //이렇게 최종적으로 span들이 들어간 li를 'ul'에 넣어준다. lottoNumbersArr배열안에 있는 값의 갯수만큼 넣어줄 예정
+        addUl.prepend(addList);
     }
+        $purchasableList.append(addUl); //만들어진 li를 ul($purchasableList)에 넣어준다
 }
+
 
 const purchasable = document.getElementById('saveNumbers'); //리스트 저장버튼을 지정해준다
 purchasable.addEventListener('click', purchasableLottoList); //리스트 저장 버튼에 임시 번호 생성창에 만들어놓은 로또 번호들을
                                                              //구매 예정창으로 옮겨주는 함수를 할당해준다           
 
 function resetPurchasableLottoList () { //구매 할 로또 리스트를 리셋하는 함수
-    document.getElementById('purchasableList').innerHTML = "";  //구매 할 로또 리스트들이 담겨져 있는 ul의 innerHTML을 비어준다
+    document.getElementById('purchasableLottoNumbers').remove();
+    purchasableArr = [];  //구매 할 로또 리스트들이 담겨져 있는 ul의 innerHTML을 비어준다
 }
 
-const resetPurchasableList = document.getElementById('resetNumbers');  //리셋 버튼에 구매 할 로또 리스트를 리셋하는 함수를 할당한다
+const resetPurchasableList = document.getElementById('resetPurchasableNumbers');  //리셋 버튼에 구매 할 로또 리스트를 리셋하는 함수를 할당한다
 resetPurchasableList.addEventListener('click', resetPurchasableLottoList);
+
+
+function deleteLottoNumber2 (event) { //만들어진 6개 로또숫자 리스트 마다에 해당 리스트를 지울 수 있도록 하는 '-'버튼의 기능이 담긴 함수
+    purchasableArr.splice(event.target.getAttribute("data-idx2"),1);
+
+    let ulSection = document.getElementById('purchasableLottoNumbers');
+    if(ulSection!==null){
+        ulSection.remove();
+    }
+    const addUl = document.createElement('ul'); //'ul'을 생성하는 메소드를 addUl에 할당한다
+    addUl.setAttribute('id', 'purchasableLottoNumbers'); //생성된 'ul'에 lottoNumbersResult라는 id를 넣어준다
+    for (i = 0; i < purchasableArr.length; i++) { //lottoNumbersArr에 있는 배열의 갯수 만큼
+
+        let addList = document.createElement('li'); //'li'를 한개 생성하고
+
+        for (j = 0; j < purchasableArr[i].length; j++) { //lottoNumbersArr에 있는 각 배열안에 있는 값의 갯수 만큼
+            const addSpan = document.createElement('span'); //'span'을 한개 생성하고
+            addSpan.textContent = purchasableArr[i][j]; //그 span안의 text값을 i번째 배열에서 j번째의 숫자를 할당하고
+            if (purchasableArr[i][j] <= 10) { //숫자 크기의 범위에 따라 아래 class를 넣어준다
+                addSpan.classList.add('colorOrange');
+            } else if (purchasableArr[i][j] <= 20) {
+                addSpan.classList.add('colorBlue');
+            } else if (purchasableArr[i][j] <= 30) {
+                addSpan.classList.add('colorPink');
+            } else if (purchasableArr[i][j] <= 40) {
+                addSpan.classList.add('colorGrey');
+            } else {
+                addSpan.classList.add('colorGreen');
+            }
+            addList.append(addSpan); //loop을 돌때마다 만들어진 하나의 span을 Li에 넣어준다
+        }
+        let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 추가 span을 만든다
+        addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
+        addDelete.setAttribute("data-idx2",i);
+        addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
+        addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 넣어준다
+        addDelete.addEventListener('click', deleteLottoNumber2); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
+
+        //이렇게 최종적으로 span들이 들어간 li를 'ul'에 넣어준다. lottoNumbersArr배열안에 있는 값의 갯수만큼 넣어줄 예정
+        addUl.prepend(addList);
+    }
+        $purchasableList.append(addUl);
+}
+
+
+
+//말도 안된다 걍 낼 다시 정신 차리고 재활용 함수 최대한 써서 만들자
