@@ -7,10 +7,14 @@ a {
   color: #00B7FF;
 }
 
+li {
+  height: 40px;
+  vertical-align: middle;
+  padding-top: 10px;
+}
 /* 금주 당첨 번호 섹션 */
 #winningSection {
   font-size: 30px;
-  text-align: center;
 }
 
 .numberSelection {
@@ -20,9 +24,8 @@ a {
 
 #thisWeekNumbers {
   text-align: center;
+  margin-top: 15px;
 }
-
-
 
 .lottoList {
   font: 20px;
@@ -38,6 +41,7 @@ a {
   margin-right: 12px;
   width: 30px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .colorBlue {
@@ -48,6 +52,7 @@ a {
   margin-right: 12px;
   width: 30px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .colorPink {
@@ -58,6 +63,7 @@ a {
   margin-right: 12px;
   width: 30px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .colorGrey {
@@ -68,6 +74,7 @@ a {
   margin-right: 12px;
   width: 30px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .colorGreen {
@@ -78,10 +85,14 @@ a {
   margin-right: 12px;
   width: 30px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .deleteIcon {
-  display: inline-block;
-  font-size: 30px;
+ 
+  
   color:crimson;
+  margin-bottom: 20px;
+  height: 24px;
+  margin-top: 10px;
 }

@@ -146,10 +146,10 @@ function drawGeneratedList(){
         }
         let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 추가 span을 만든다
         addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
-        addDelete.setAttribute("data-idx",i);
-        addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
+        addDelete.setAttribute("dataxidx",i);
+        addDelete.textContent = 'x'; // 해당 span에 'x' text를 넣어준다
         addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 넣어준다
-        addDelete.addEventListener('click', deleteLottoNumber); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
+        addDelete.addEventListener('click', deleteLottoNumber); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 'x'를 넣어놓음)
 
         addUl.prepend(addList); //이렇게 최종적으로 span들이 들어간 li를 'ul'에 넣어준다. lottoNumbersArr배열안에 있는 값의 갯수만큼 넣어줄 예정
     }
@@ -164,16 +164,16 @@ function removeLottoNumbers () {  //윈도우 창에 불려온 로또 번호 전
     drawGeneratedList();  
 };
 
-function deleteLottoNumber (event) { //만들어진 6개 로또숫자 리스트 마다에 해당 리스트를 지울 수 있도록 하는 '-'버튼의 기능이 담긴 함수
+function deleteLottoNumber (event) { //만들어진 6개 로또숫자 리스트 마다에 해당 리스트를 지울 수 있도록 하는 'x'버튼의 기능이 담긴 함수
     
     //현재의 li 안에 있는 값들을 배열로 받아오고 이 배열과 lottoNumbersArr에 있는 배열들 중 같은 값을 가지고 있는게 있다면 index를 찾아서 그걸 지워라  
-    lottoNumbersArr.splice(event.target.getAttribute("data-idx"),1);
+    lottoNumbersArr.splice(event.target.getAttribute("dataxidx"),1);
     drawGeneratedList();
     /*
     let newArr = [];
     let findDeleteKey = document.getElementsByClassName('deleteIcon');
     let parentDeleteKey = findDeleteKey[0].parentElement;
-    for (i = 0; i < parentDeleteKey.children.length - 1; i++) {
+    for (i = 0; i < parentDeleteKey.children.length x 1; i++) {
         newArr.push(parentDeleteKey.children[i].innerHTML);   //newArr에 클릭한 곳의 숫자값들을 newArr에 넣는다.
     }
 
@@ -186,7 +186,7 @@ function deleteLottoNumber (event) { //만들어진 6개 로또숫자 리스트 
     //let index = Array.from(event.target.parentElement.children).indexOf(this.target); // 이건 작동한다. 하지만 새롭게 만들어 보는중
     //lottoNumbersArr.splice(index, 1);
 
-    //event.target.parentElement.remove(); //클릭되어지는 곳의('-'에 설정해둠) 부모엘레먼트('li')를 통으로 없엔다.
+    //event.target.parentElement.remove(); //클릭되어지는 곳의('x'에 설정해둠) 부모엘레먼트('li')를 통으로 없엔다.
 
     //lottoNumbersArr에서도 지울 수 있는 방법 강구
 
@@ -253,10 +253,10 @@ function purchasableLottoList () { //로또 번호들을 구매할 구역으로 
         }
         let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 추가 span을 만든다
         addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
-        addDelete.setAttribute("data-idx2",i);
-        addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
+        addDelete.setAttribute("dataxidx2",i);
+        addDelete.textContent = 'x'; // 해당 span에 'x' text를 넣어준다
         addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 넣어준다
-        addDelete.addEventListener('click', deleteLottoNumber2); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
+        addDelete.addEventListener('click', deleteLottoNumber2); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 'x'를 넣어놓음)
 
         //이렇게 최종적으로 span들이 들어간 li를 'ul'에 넣어준다. lottoNumbersArr배열안에 있는 값의 갯수만큼 넣어줄 예정
         addUl.prepend(addList);
@@ -278,8 +278,8 @@ const resetPurchasableList = document.getElementById('resetPurchasableNumbers');
 resetPurchasableList.addEventListener('click', resetPurchasableLottoList);
 
 
-function deleteLottoNumber2 (event) { //만들어진 6개 로또숫자 리스트 마다에 해당 리스트를 지울 수 있도록 하는 '-'버튼의 기능이 담긴 함수
-    purchasableArr.splice(event.target.getAttribute("data-idx2"),1);
+function deleteLottoNumber2 (event) { //만들어진 6개 로또숫자 리스트 마다에 해당 리스트를 지울 수 있도록 하는 'x'버튼의 기능이 담긴 함수
+    purchasableArr.splice(event.target.getAttribute("dataxidx2"),1);
 
     let ulSection = document.getElementById('purchasableLottoNumbers');
     if(ulSection!==null){
@@ -309,10 +309,10 @@ function deleteLottoNumber2 (event) { //만들어진 6개 로또숫자 리스트
         }
         let addDelete = document.createElement('span'); //위에 만든 로또번호 6자리를 지울 수 있게 하려고 추가 span을 만든다
         addDelete.classList.add('deleteIcon'); //해당 span에 deleteIcon이라는 클래스를 부여한다
-        addDelete.setAttribute("data-idx2",i);
-        addDelete.textContent = '-'; // 해당 span에 '-' text를 넣어준다
+        addDelete.setAttribute("dataxidx2",i);
+        addDelete.textContent = 'x'; // 해당 span에 'x' text를 넣어준다
         addList.append(addDelete); //해당 span을 위에 만들어진 addList 'li' 끝에 넣어준다
-        addDelete.addEventListener('click', deleteLottoNumber2); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 '-'를 넣어놓음)
+        addDelete.addEventListener('click', deleteLottoNumber2); //addDelete에 (이곳에 이벤트 부여할 용으로 텍스트 'x'를 넣어놓음)
 
         //이렇게 최종적으로 span들이 들어간 li를 'ul'에 넣어준다. lottoNumbersArr배열안에 있는 값의 갯수만큼 넣어줄 예정
         addUl.prepend(addList);
@@ -322,4 +322,68 @@ function deleteLottoNumber2 (event) { //만들어진 6개 로또숫자 리스트
 
 
 
-//말도 안된다 걍 낼 다시 정신 차리고 재활용 함수 최대한 써서 만들자
+//말도 안된다 걍 낼 다시 정신 차리고 재활용 함수 최대한 써서 만들자. 일단 어떻게든 완수해보고 다 뜯어 고친다
+
+
+
+//************************************** 구매한 로또 번호들과 금주 당첨번호와 당첨 결과 확인 *************************************
+
+const purchasedListArr = [];
+const $purchasedList = document.getElementById('purchasedLottoList');
+
+function purchaseList () {
+    for (i = 0; i < purchasableArr.length; i++) {
+        purchasedListArr.push(purchasableArr[i]);
+    }
+
+    
+    let ulSection = document.getElementById('purchasedList');
+    if(ulSection!==null){
+        ulSection.remove();
+    }
+    const addUl = document.createElement('ul'); 
+    addUl.setAttribute('id', 'purchasedList'); 
+    for (i = 0; i < purchasedListArr.length; i++) { 
+
+        let addList = document.createElement('li'); 
+
+        for (j = 0; j < purchasedListArr[i].length; j++) { 
+            const addSpan = document.createElement('span'); 
+            addSpan.textContent = purchasedListArr[i][j]; 
+            if (purchasedListArr[i][j] <= 10) {
+                addSpan.classList.add('colorOrange');
+            } else if (purchasedListArr[i][j] <= 20) {
+                addSpan.classList.add('colorBlue');
+            } else if (purchasedListArr[i][j] <= 30) {
+                addSpan.classList.add('colorPink');
+            } else if (purchasedListArr[i][j] <= 40) {
+                addSpan.classList.add('colorGrey');
+            } else {
+                addSpan.classList.add('colorGreen');
+            }
+            addList.append(addSpan); 
+        }
+        
+        addUl.prepend(addList);
+    }
+        $purchasedList.append(addUl);
+}
+
+const purchaseNumbers = document.getElementById('purchaseNumbers');
+purchaseNumbers.addEventListener('click', purchaseList);
+
+
+function resetPurchasedLottoNumber () { 
+    document.getElementById('purchasedList').remove();
+    while(purchasedListArr.length>0){
+        purchasedListArr.pop();
+    }
+}
+
+const resetPurchasedNumbers = document.getElementById('resetPurchasedNumbers');
+resetPurchasedNumbers.addEventListener('click',resetPurchasedLottoNumber);
+
+
+function checkWinningNumbers () {
+    
+}
