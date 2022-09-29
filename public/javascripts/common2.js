@@ -186,6 +186,31 @@ function deepCopy (arr) {
 //if 절 사용해서 Array.isArray 일경우는 return Obj를 {} 이 아닌 []배열로 return 하게끔, 첨엔 let returnObj ={}이 있어야 하고
 
 
+function copyObj (obj) {          
+    /*
+        1. copyObj 가 하는 일
+            - obj를 받아서 그 obj를 복사한 copiedObj를 만들어준다. obj가 다차원이라도 link개념이 적용되지 않은 deep copy형식의 copiedObj가 생성된다. 
+            obj가 다차원 객체여도 obj를 복사한 copiedObj는 obj안의 다차원 객체와 copiedObj의 다차원 객체는 서로를 link하지 않는 상태이다.  
+            function copyObj (obj) {
+                return       obj가 복사된 copyObj
+            }
+        
+        2. obj로 받을 수 있는것들
+            a. 객체
+            b. 배열
+            c. null
+            d. 0차원(문자,숫자,불린,)
+            - obj를 복사해서 copiedObj로 리턴할 때 obj와 copiedObj는 동일한 형태이다. ex: 객체 -> 객체, 배열 -> 배열, 0차원 -> 0차원
+
+            2.a 객체
+                - 
+        
+    */
+
+       
+}
+
+
 
 
 
