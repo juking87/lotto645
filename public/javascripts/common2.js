@@ -122,6 +122,8 @@ document.getElementById('fixWinningNumbers').addEventListener('click', function(
 }); 
 
 
+
+
 //5. 랜덤 번호 생성 함수
 const randomNumbersArr = [];  //랜덤 생성번호들이 저장될 배열
 
@@ -154,37 +156,23 @@ document.getElementById('removeNumbers').addEventListener('click', function(){
     resetArrayAndDraw(randomNumbersArr, 'randomLottoNumbers');
 });
 
+//5.c 랜덤번호 저장하는 버튼
+document.getElementById('saveNumbers').addEventListener('click', function () {
+    copyRandomToPurchasable(randomNumbersArr, purchasableLottoListArr, 'purchasableLottoList');
+});
 
-//6. 배열을 복사하는 함수
-
-
-// 1차 배열이나 배열안에 다른 오브젝트가 없을때 사용 할 수 있는 형태
-    //a. Use built-in array methods
-    //const array2 = array1.map(elem => elem);
-
-    //b. Use Spread operator
-    //const array2 = [...array1];
-
-    //c. const array2 = [];
-    //array1.forEach(elem => {
-    //array2.push(elem)
-    //});
-
-
-//(1) Deep copy JSON.parse and JSON.stringify
-//    copiedArr = JSON.parse(JSON.stringify(receivedArr));
-
-//(2) copiedArr = (receivedArr) => [...receivedArr].map(row => [...row])
-function deepCopy (arr) {
-    let newArr = [...arr];   //spread operator를 사용해서 newArr에 arr에 담겨 있는 1차 배열 전부를 deep copy해서 보낸다.
-                            //이때 배열안에 배열이 들어있는 경우라면 그 배열은 이 시점까지는 link개념으로 복사되어져 있다.
-    newArr.forEach((row, rowIndex) => newArr[rowIndex] = [...row]);
-    return newArr;          //근데 지금 test해보니까 1차배열을 넣으면 작동하지 않는다, 
+//5.c.(1) 랜덤번호 arr에서 구매가능한 arr로 옮기는 함수
+const purchasableLottoListArr = [];                             //구매 가능한 숫자들을 가지고 있는 arr
+function copyRandomToPurchasable (receivedArr, newArr, divId) { //구매 가능한 숫자들을 다른 arr에서 가져와서 새로 그리는 함수(가져올arr, 넣어줄arr, 그릴장소divId)
+    for (let i = 0; i < receivedArr.length; i++) {              // 가져올arr들을 for loop 돌려서 넣어줄arr에 push한다. 이 방법은 링크 개념으로 들어간다. 서로의 배열이 연결되어 있다.
+        newArr.push(receivedArr[i]);
+    }
+    drawNumberList (newArr, divId);                             //그리는 함수를 사용해서 새로 그려줌.
 }
 
-//nested function을 만들어야 하고 object일때랑 null이 아닐경우레 작동하게 하고 아니면 리턴 받은거 그대로 뱉고(스트링 불린 숫자 등등 링크 안되는놈들만 나가게됨)
-//if 절 사용해서 Array.isArray 일경우는 return Obj를 {} 이 아닌 []배열로 return 하게끔, 첨엔 let returnObj ={}이 있어야 하고
 
+
+//6. 배열을 복사하는 함수
 
 function copyObj (obj) {          
     /*
@@ -202,104 +190,57 @@ function copyObj (obj) {
             d. 0차원(문자,숫자,불린,)
             - obj를 복사해서 copiedObj로 리턴할 때 obj와 copiedObj는 동일한 형태이다. ex: 객체 -> 객체, 배열 -> 배열, 0차원 -> 0차원
 
-            2.a 객체
-                - 
-        
-    */
+        3. 코딩 순서
+            - 기본적으로 객체를 받아온다 가정하고, 리턴될 copiedObj도 객체({})로 설정
+            - 함수안에 넣어주는 변수가 객체인지 확인
+            - 객체 중에서 obj인지 배열인지 확인, 배열일 경우 배열 형태로 내밷어야 하기 때문에 복사될 장소를 배열([])로 바꿈
+            - 객체(객체 or 배열)이 아닐경우 받아온 값을 그대로 리턴(0차원)
 
-       
-}
+            3.a 객체나 배열일 경우
+                - 객체나 배열일 경우 for loop을 돌림
+                - 객체나 베열이나 0차원을 가지고 있는 obj의 모든 인덱스 번호 값들을 복사할 곳의 인덱스 값으로 할당해준다
+                - 이때 어떠한 인덱스 값이 객체나 배열일 수 있기 때문에 해당 함수를 다시 돌게끔(다시 돌게끔해서 0차원 값을 리턴해 줄 수 있게끔)한다
+            
+            3.b 0차원일 경우
+                - 함수에 들어오먄 if절을 통과한뒤(객체인지 배열인지 검사) 0차원이기 때문에 받은걸 다시 내뱉는다
+*/
+
+    let copiedObj = {}
+
+    if (typeof obj === 'object' && obj !== null) {  
+        if (Array.isArray(obj)) {
+            copiedObj = [];
+        }
+    } else {
+        return obj;
+    }
+
+    for (let key in obj) {
+        copiedObj[key] = copyObj(obj[key]);
+    }
+
+    return copiedObj;
+};
 
 
+//7. 구매할 로또 번호 생성 및 구매
 
 
-
-
-
-// 1. 랜덤 당첨 번호 등록 섹션
-
+//7.b 구매할 로또 번호 리셋
+document.getElementById('resetPurchasableNumbers').addEventListener('click', function () {
+    resetArrayAndDraw(purchasableLottoListArr, 'purchasableLottoList')
+})
 
 /*
-// 1.1 번호 생성 후 조건문들을 통과 후 알맞는 배열에 넣어준다
-const winningNumbersArr = [];
+랜덤번호 생성한거를 구매할 로또 번호 섹션으로 옮겨야 함.
 
-function validateLottoNumbers(Arr,no){
-    if (Arr.length > 5) {
-        return {
-            success: false,
-            message: '6개 이하의 숫자 등록이 가능합니다',
-        }
-    } else if (isNaN(no) == true) {
-        
-    } else if (no < 1) {
-        
-    } else if (no > 45) {
-        
-    } else if (winningNumbersArr.includes(no)) {
-        
-    }
-}
-
-function selectingWinningNumbers () {
-    const inputNumber = document.getElementById('number_choice').value;
-    const validateReturn = validateLottoNumbers(winningNumbersArr,inputNumber);
-    if(validateReturn.success){
-        winningNumbersArr.push(inputNumber);
-        winningNumbersArr.sort((a, b) => a-b);
-        drawWinningNumbers(winningNumbersArr, 'winningNumbersDiv')
-    }
-    else{
-        alert(validateReturn.message);
-    }
-}
-
-
-//1.2 생성된 번호를 그려준다
-
-function drawWinningNumbers () {
-    const $winningNumbers = document.getElementById('winningNumbersDiv')
-    let $ulSection = document.getElementById('winningNumbersUl');
-
-    if ($ulSection !== null) {
-        $ulSection.remove();
-    } 
-
-    let addUl = document.createElement('ul');
-    addUl.setAttribute('id', 'winningNumbersUl');
-
-    for (i = 0; i < winningNumbersArr.length; i++) {
-        let addSpan = document.createElement('span');
-        addSpan.textContent = winningNumbersArr[i];
-        let inputNumber2 = addSpan.textContent;
-
-        if (inputNumber2 < 11) {
-            addSpan.classList.add('colorOrange');
-        } else if (inputNumber2 < 21) {
-            addSpan.classList.add('colorBlue');
-        } else if (inputNumber2 < 31) {
-            addSpan.classList.add('colorPink');
-        } else if (inputNumber2 < 41) {
-            addSpan.classList.add('colorGrey');
-        } else {
-            addSpan.classList.add('colorGreen');
-        }
-        addUl.append(addSpan);
-    }   
-    $winningNumbers.append(addUl);
-}
-
-
-const $fixWinningNumbers = document.getElementById('fixWinningNumbers');
-$fixWinningNumbers.addEventListener('click', selectingWinningNumbers);
-
-function resetWinningNumbers () {
-    while (winningNumbersArr.length > 0) {
-        winningNumbersArr.pop();
-    }
-    drawWinningNumbers();
-}
-
-const $resetWinningNumbers = document.getElementById('removeWinningNumbers');
-$resetWinningNumbers.addEventListener('click', resetWinningNumbers);
+1. 랜덤 번호 생성에서 리스트 저장을 누를 시, 구매할 로또 번호 창에 그림
+    - 그리기 전에 randomNumbersArr에서 purchasableLottoList로 배열들이 복사되어야 함
+    - purchasableLottoList div 안에 있는 모든걸 지우고
+    - 복사된 purchasableLottoList 배열을 새로 그림
+    - 그리고 이 창에도 본인이 선택 할 수 있는 6개 번호 삽입창이 있다
+    - 6개의 숫자를 넣고 등록버튼을 누를 시 해당 6개의 번호가 구매할 로또 번호 리스트로 그려진다. 
 
 */
+
+
