@@ -89,10 +89,12 @@ li {
 }
 
 .deleteIcon {
- 
-  
   color:crimson;
   margin-bottom: 20px;
   height: 24px;
   margin-top: 10px;
+}
+
+.numberSelection1 {
+  width: 30px;
 }

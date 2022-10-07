@@ -69,7 +69,7 @@ function validateLottoNumbers(Arr,no){                              //배열과 
                                                                     //이 함수는 에러 발생 시 일련의 작업을 수행하게 하는 함수이므로
                                                                     //기본값을 false로 작성해 코드의 길이를 줄인다
     if (Arr.length > 5) {                                           //받아온 배열의 길이가 6개 이상일 때    
-        returnObj.message= '6개 이하의 숫자 등록이 가능합니다.';      //returnObj에 message라는 key를 추가하고 이때 출력할 문자열을 value값으로 등록한다  
+        returnObj.message= '총 6개의 숫자를 등록해주세요.';      //returnObj에 message라는 key를 추가하고 이때 출력할 문자열을 value값으로 등록한다  
     } else if (isNaN(no) == true) {                                //받아온 no가 숫자가 아닌게 맞다면
         returnObj.message= '숫자를 등록해주세요.';                  //returnObj에 message라는 key를 추가하고 이때 출력할 문자열을 value값으로 등록한다 
     } else if (no < 1) {                                          //받아온 no가 숫자 1보다 작다면  
@@ -225,11 +225,62 @@ function copyObj (obj) {
 
 //7. 구매할 로또 번호 생성 및 구매
 
+//7.a 구매할 로또 번호 구매    ---------- 이건 나중에 만든다
+document.getElementById('purchaseNumbers').addEventListener('click', function () {
+
+})
 
 //7.b 구매할 로또 번호 리셋
 document.getElementById('resetPurchasableNumbers').addEventListener('click', function () {
     resetArrayAndDraw(purchasableLottoListArr, 'purchasableLottoList')
 })
+
+//7.c 구매할 로또 번호 등록
+document.getElementById('purchaseMyNumbers').addEventListener('click', function () {
+    selectingMyNumbers(purchasableLottoListArr, 'purchasableLottoList');
+})
+
+//각각의 input 창에 원하는 숫자 등록
+//등록한 숫자들을 하나의 배열에 저장
+//저장된 배열을 purchasableLottoListArr 끝에 넣어준다 
+//그려져 있던 배열을 다시 지워주고 새롭게 그린다 
+
+
+function selectingMyNumbers (arr, divId) {       //그릴 arr와 divId를 받아온다                         
+    const tempArr = [];                         //6개의 input창에 적혀있는 값을 임시로 받을 Arr
+    const tempArr2 = [];                        //validate 함수를 통과했을 때 넣어줄 새로운 Arr
+
+    tempArr.push(document.getElementById('number_choice1').value);      //input에 들어간 값들을 tempArr에 임시로 넣어둔다
+    tempArr.push(document.getElementById('number_choice2').value);
+    tempArr.push(document.getElementById('number_choice3').value);
+    tempArr.push(document.getElementById('number_choice4').value);
+    tempArr.push(document.getElementById('number_choice5').value);
+    tempArr.push(document.getElementById('number_choice6').value);                                            
+                
+    
+
+    for (i = 0; i < tempArr.length; i++) {      //tempArr에 들어있는 input값들의 갯수만큼 loop을 돌린다
+        const validateReturn = validateLottoNumbers(tempArr2, tempArr[i]);  // 숫자들을 validate 해주는 함수를 통해 loop돌릴때마다 tempArr[i]의 숫자 값을 검사한다
+                                                                            //tempArr2에 중복된 숫자가 들어가는것도 방지해줌                          
+        if(validateReturn.success){                 //tempArr[i] 숫자가 validate 함수를 통과 한다면            
+            tempArr2.push(tempArr[i]);              //새로운 임시배열인 tempArr2로 tempArr[i]를 넣어준다
+            if (tempArr2.length == 6) {             //tempArr2에 들어간 숫자의 총 갯수가 6이 되면
+                tempArr2.sort((a, b) => a-b);       //배열안의 숫자들을 오름차순으로 정리하고
+                arr.push(tempArr2);                 //받아온 배열에 push로 총 6개의 숫자가 들어있는 tempArr2배열을 넣어준다
+                drawNumberList(arr, divId)          //받아온 배열을 새로 그려주고(미리 작성된 그리기 함수에는 그릴곳에 무언가 있다면 먼저 없에주고 받아온 배열을 새로 그린다)
+                break;                              //그리고 난뒤 또 loop을 돌면 안되기 때문에 여기서 break를 걸어준다
+            }                          
+        }
+        else{                                       //tempArr[i]가 validate 함수를 통과하지 못한다면    
+            alert(validateReturn.message);          //validate 함수에서 return 된 에러 메세지를 보여준다, 어디에서 걸렸는지는 validate함수를 보면 내용을 확인 할 수 있다
+            break;                                  //한번이라도 에러가 잡힌다면 그 곳에서 break를 걸어줘서 더 이상 loop이 돌지 않도록 한다.
+        }
+    }
+}
+
+//-------------------------------------------------구매하면 purchasableLottoListArr를 카피 한뒤 당첨결과 확인 창에 그리는것 부터 짜야 함.
+
+
 
 /*
 랜덤번호 생성한거를 구매할 로또 번호 섹션으로 옮겨야 함.
