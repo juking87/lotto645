@@ -250,31 +250,30 @@ function selectingMyNumbers (arr, divId) {       //그릴 arr와 divId를 받아
     const tempArr = [];                         //6개의 input창에 적혀있는 값을 임시로 받을 Arr
     const tempArr2 = [];                        //validate 함수를 통과했을 때 넣어줄 새로운 Arr
 
-    tempArr.push(document.getElementById('number_choice1').value);      //input에 들어간 값들을 tempArr에 임시로 넣어둔다
-    tempArr.push(document.getElementById('number_choice2').value);
-    tempArr.push(document.getElementById('number_choice3').value);
-    tempArr.push(document.getElementById('number_choice4').value);
-    tempArr.push(document.getElementById('number_choice5').value);
-    tempArr.push(document.getElementById('number_choice6').value);                                            
-                
+    $inputElems = document.getElementsByClassName("jy_number_input"); //향후 추가가 될 수도 있고 어쨌든 훗날의 범용성을 위해 "jy_number_input"이라는 클래스를 모든 input div에 넣어준다.
+                                                                    //이렇게 되면 html안에 있는 항목들 중 "jy_number_input"을 클래스로 가지고 있는 모든 요소들을 묶어서 설정할 수 있다
+    for(let i=0; i<$inputElems.length; i++){        //$inputElems의 길이만큼, 이말은 "jy_number_input" 클래스를 가지고 있는 요소의 갯수만큼
+        tempArr.push($inputElems[i].value);         //각각의 value를 tempArr에 넣어준다. html에 새로운 input창을 만들어도 클래스만 jy_number_input로 넣어준다면
+                                                    //validate함수를 통과할 수는 없겠지만, 향후 다른 프로그램에서 고치는데 유용할 것이다.
+    }
     
-
     for (i = 0; i < tempArr.length; i++) {      //tempArr에 들어있는 input값들의 갯수만큼 loop을 돌린다
         const validateReturn = validateLottoNumbers(tempArr2, tempArr[i]);  // 숫자들을 validate 해주는 함수를 통해 loop돌릴때마다 tempArr[i]의 숫자 값을 검사한다
                                                                             //tempArr2에 중복된 숫자가 들어가는것도 방지해줌                          
-        if(validateReturn.success){                 //tempArr[i] 숫자가 validate 함수를 통과 한다면            
-            tempArr2.push(tempArr[i]);              //새로운 임시배열인 tempArr2로 tempArr[i]를 넣어준다
-            if (tempArr2.length == 6) {             //tempArr2에 들어간 숫자의 총 갯수가 6이 되면
-                tempArr2.sort((a, b) => a-b);       //배열안의 숫자들을 오름차순으로 정리하고
-                arr.push(tempArr2);                 //받아온 배열에 push로 총 6개의 숫자가 들어있는 tempArr2배열을 넣어준다
-                drawNumberList(arr, divId)          //받아온 배열을 새로 그려주고(미리 작성된 그리기 함수에는 그릴곳에 무언가 있다면 먼저 없에주고 받아온 배열을 새로 그린다)
-                break;                              //그리고 난뒤 또 loop을 돌면 안되기 때문에 여기서 break를 걸어준다
-            }                          
-        }
-        else{                                       //tempArr[i]가 validate 함수를 통과하지 못한다면    
+        if(!validateReturn.success){                                      //tempArr[i]가 validate 함수를 통과하지 못한다면    
             alert(validateReturn.message);          //validate 함수에서 return 된 에러 메세지를 보여준다, 어디에서 걸렸는지는 validate함수를 보면 내용을 확인 할 수 있다
             break;                                  //한번이라도 에러가 잡힌다면 그 곳에서 break를 걸어줘서 더 이상 loop이 돌지 않도록 한다.
-        }
+        }                
+        //이 뒤로 부터는 validateReturn.success 가 true인 상황이다. 굳이 true인걸 다시 true인지 확인 할 필요없다. 바로 써주면된다. 아닐때만 에러메세지 보내고
+        //함수를 종료하게 되면 된다.         
+        tempArr2.push(tempArr[i]);              //validate 함수를 통과한 값들을 새로운 임시배열인 tempArr2로 tempArr[i]를 넣어준다
+        if (tempArr2.length == tempArr.length) {   //지금 코드로는 tempArr2에 들어간 숫자의 총 갯수가 6이 되면이지만, 좌측처럼 쓰면 나중에 input갯수가 늘어나도
+                                                //적용이 된다. 물론 지금 코드에서는 tempArr2.length == 6만 사용 가능하다
+            tempArr2.sort((a, b) => a-b);       //배열안의 숫자들을 오름차순으로 정리하고
+            arr.push(tempArr2);                 //받아온 배열에 push로 총 6개의 숫자가 들어있는 tempArr2배열을 넣어준다
+            drawNumberList(arr, divId)          //받아온 배열을 새로 그려주고(미리 작성된 그리기 함수에는 그릴곳에 무언가 있다면 먼저 없에주고 받아온 배열을 새로 그린다)
+            break;                              //그리고 난뒤 또 loop을 돌면 안되기 때문에 여기서 break를 걸어준다
+        }   
     }
 }
 
@@ -283,15 +282,9 @@ function selectingMyNumbers (arr, divId) {       //그릴 arr와 divId를 받아
 
 
 /*
-랜덤번호 생성한거를 구매할 로또 번호 섹션으로 옮겨야 함.
-
-1. 랜덤 번호 생성에서 리스트 저장을 누를 시, 구매할 로또 번호 창에 그림
-    - 그리기 전에 randomNumbersArr에서 purchasableLottoList로 배열들이 복사되어야 함
-    - purchasableLottoList div 안에 있는 모든걸 지우고
-    - 복사된 purchasableLottoList 배열을 새로 그림
-    - 그리고 이 창에도 본인이 선택 할 수 있는 6개 번호 삽입창이 있다
-    - 6개의 숫자를 넣고 등록버튼을 누를 시 해당 6개의 번호가 구매할 로또 번호 리스트로 그려진다. 
-
+1. winningNumbersArr 배열 안에 있는 값을 purchasableLottoListArr[i]들과 비교한다.
+2. 서로의 Arr를 비교하는 함수가 만들어져야 할것 같으며, 몇개의 값들이 동일한지에 따라 다른 메세지들이 출력되어져야 한다
+3. 같은 번호가 
 */
 
 
