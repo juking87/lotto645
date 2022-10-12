@@ -158,12 +158,12 @@ document.getElementById('removeNumbers').addEventListener('click', function(){
 
 //5.c 랜덤번호 저장하는 버튼
 document.getElementById('saveNumbers').addEventListener('click', function () {
-    copyRandomToPurchasable(randomNumbersArr, purchasableLottoListArr, 'purchasableLottoList');
+    copyArr(randomNumbersArr, purchasableLottoListArr, 'purchasableLottoList');
 });
 
 //5.c.(1) 랜덤번호 arr에서 구매가능한 arr로 옮기는 함수
 const purchasableLottoListArr = [];                             //구매 가능한 숫자들을 가지고 있는 arr
-function copyRandomToPurchasable (receivedArr, newArr, divId) { //구매 가능한 숫자들을 다른 arr에서 가져와서 새로 그리는 함수(가져올arr, 넣어줄arr, 그릴장소divId)
+function copyArr (receivedArr, newArr, divId) { //구매 가능한 숫자들을 다른 arr에서 가져와서 새로 그리는 함수(가져올arr, 넣어줄arr, 그릴장소divId)
     for (let i = 0; i < receivedArr.length; i++) {              // 가져올arr들을 for loop 돌려서 넣어줄arr에 push한다. 이 방법은 링크 개념으로 들어간다. 서로의 배열이 연결되어 있다.
         newArr.push(receivedArr[i]);
     }
@@ -224,10 +224,10 @@ function copyObj (obj) {
 
 
 //7. 구매할 로또 번호 생성 및 구매
-
+const purchasedLottoListArr = [];                             //구매한 숫자들을 가지고 있는 arr
 //7.a 구매할 로또 번호 구매    ---------- 이건 나중에 만든다
 document.getElementById('purchaseNumbers').addEventListener('click', function () {
-
+    copyArr(purchasableLottoListArr, purchasedLottoListArr, 'purchasedLottoList')
 })
 
 //7.b 구매할 로또 번호 리셋
@@ -277,6 +277,27 @@ function selectingMyNumbers (arr, divId) {       //그릴 arr와 divId를 받아
     }
 }
 
+//8. 당첨 번호 구매 및 확인
+
+//8.a 구매한 로또 번호를 당첨 번호와 확인  -- 만들어 보는중
+document.getElementById('purchasedNumbers').addEventListener('click', function () {
+    
+})
+
+//8.b 구매한 로또 번호 리셋
+document.getElementById('resetPurchasedNumbers').addEventListener('click', function () {
+    resetArrayAndDraw(purchasedLottoListArr, 'purchasedLottoList')
+})
+
+function findWinner () {
+    for (i = 0; i < purchasedLottoListArr.length; i++) {
+        
+    }
+
+}
+
+
+
 //-------------------------------------------------구매하면 purchasableLottoListArr를 카피 한뒤 당첨결과 확인 창에 그리는것 부터 짜야 함.
 
 
@@ -284,7 +305,8 @@ function selectingMyNumbers (arr, divId) {       //그릴 arr와 divId를 받아
 /*
 1. winningNumbersArr 배열 안에 있는 값을 purchasableLottoListArr[i]들과 비교한다.
 2. 서로의 Arr를 비교하는 함수가 만들어져야 할것 같으며, 몇개의 값들이 동일한지에 따라 다른 메세지들이 출력되어져야 한다
-3. 같은 번호가 
+3. 동일한 값들이 확인되면 특정 class를 추가 해주고 표현을 다르게 해준다.
+4. 
 */
 
 
