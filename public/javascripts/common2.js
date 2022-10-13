@@ -91,13 +91,14 @@ const winningNumbersArr = [];                       //당첨번호들을 저장�
 
 //arr=[[2,3,4,5,6]];
 function selectingNumbers (arr, inputId, divId) {                               //당첨번호를 등록하는 함수
-    const inputNumber = document.getElementById(inputId).value;     //inputNumber 라는 변수에 input창이 있는 곳의 id를 잡고 그곳에 적힌 숫자의 값을 할당한다
+    let inputNumber = document.getElementById(inputId).value;     //inputNumber 라는 변수에 input창이 있는 곳의 id를 잡고 그곳에 적힌 숫자의 값을 할당한다
                                                     //추후에 다른 input에 적은 숫자를 가져와서 어떠한 배열에 등록할 수도 있기 때문에
                                                     //배열과 작성될 divId를 받아왔고, 
     const validateReturn = validateLottoNumbers(arr,inputNumber); //validateReturn 라는 변수에 당첨번호들이 저장되어있는 배열과 inputNumber를 보내
                                                                                 //해당 inputNumber 가 해당 배열에 들어갈 수 있는지 여부를 판단한다
 
     if(validateReturn.success){                                     //배열 검사 후 sucess key값의 value가 true로 나온다면     
+        inputNumber = parseInt(inputNumber);
         arr.push(inputNumber);                            //선택한 배열에 inputNumber를 넣어주고
         arr.sort((a, b) => a-b);                          //배열안의 값들을 오름차순으로 정리한다
         drawNumberList([arr], divId)        //검사를 패스 했으니 그리는 함수에 그리고 싶은 배열과 위치를 보내준다. 
@@ -289,9 +290,24 @@ document.getElementById('resetPurchasedNumbers').addEventListener('click', funct
     resetArrayAndDraw(purchasedLottoListArr, 'purchasedLottoList')
 })
 
-function findWinner () {
-    for (i = 0; i < purchasedLottoListArr.length; i++) {
-        
+/*
+
+1. Arr들끼리의 동일한 값을 찾아야 한다. ( intersection = arr1.filter(x => arr2.includes(x)); )
+    - purchasableLottoListArr[i][ 에서 각각의 배열들 중에 purchasableLottoListArr[i][j]가 winningNumbersArr[i]와 몇개가 같은지 확인해야한다
+2. ex) purchasableLottoListArr[0] 베열에 들어오면 새로운 배열을 하나 만들어, purchasableLottoListArr[0] 안에 있는 모든 값들을 winning과 확인해,
+    확인해서 같은 값이 있으면 새로 만들 배열에 push를 해. 새로운 배열의 갯수를 확인 해. 갯수마다 맞는 멘트를 add스판 해서 넣어줘. 이러려면 넣어줘야 할 곳을
+    알아야 하니까 애초에 idx-[number]가 이미 div안에 들어가 있으면 idx를 찾아서 해당 li에 알맞는 멘트가 들어간 span이 들어갈 수 있으려나?
+*/
+let winningResultArr = [];
+
+function findWinner (checkerArr, checkingArr, divId) {
+    for (i = 0; i < checkingArr.length; i++) {
+        let tempArr = [];
+        for (j = 0; j < checkingArr[i].length; j++) {
+            
+            tempArr.push();
+        }
+        winningResultArr.push(tempArr);
     }
 
 }
